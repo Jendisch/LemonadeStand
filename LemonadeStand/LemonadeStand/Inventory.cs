@@ -18,13 +18,11 @@ namespace LemonadeStand
 
         public void ShowItemInventory()
         {
-            Console.Clear();
-            Console.WriteLine("Your current inventory");
-            Console.WriteLine("Cups: {0}", cups.Count);
-            Console.WriteLine("Lemons: {0}", lemons.Count);
-            Console.WriteLine("Cups of Sugar: {0}", cupsOfSugar.Count);
-            Console.WriteLine("Ice Cubes: {0}", cubesOfIce.Count);
-
+            int cupCount = cups.Count;
+            int lemonCount = lemons.Count;
+            int sugarCount = cupsOfSugar.Count;
+            int iceCount = cubesOfIce.Count;
+            UserInterface.DisplayInventory(cupCount, lemonCount, sugarCount, iceCount);
         }
 
         public void AddCups(int amountOfCupsBought)
@@ -33,24 +31,17 @@ namespace LemonadeStand
             {
                 Cup cup = new Cup();
                 cups.Add(cup);
-
             }
         }
 
-        //public void UseCups()
-        //{
-        //        int removeCups = playerOne.recipe.TakeCupsOut();
-        //        for (int i = 0; i < removeCups; i++)
-        //        {
-        //            cups.RemoveAt(0);
-        //        }
-        //}
-
-
-
-
-
-
+        public void RemoveCups(Player playerOne)
+        {
+                int removedCups = playerOne.recipe.RemoveCupsFromInventory();
+                for (int i = 0; i < removedCups; i++)
+                {
+                    cups.RemoveAt(0);
+                }
+        }
 
         public void AddLemons(int amountOfLemonsBought)
         {
@@ -58,7 +49,15 @@ namespace LemonadeStand
             {
                 Lemon lemon = new Lemon();
                 lemons.Add(lemon);
+            }
+        }
 
+        public void RemoveLemons(Player playerOne)
+        {
+            int removedLemons = playerOne.recipe.RemoveLemonsFromInventory();
+            for (int i = 0; i < removedLemons; i++)
+            {
+                lemons.RemoveAt(0);
             }
         }
 
@@ -68,7 +67,15 @@ namespace LemonadeStand
             {
                 Sugar sugar = new Sugar();
                 cupsOfSugar.Add(sugar);
+            }
+        }
 
+        public void RemoveSugar(Player playerOne)
+        {
+            int removedSugar = playerOne.recipe.RemoveSugarFromInventory();
+            for (int i = 0; i < removedSugar; i++)
+            {
+                cupsOfSugar.RemoveAt(0);
             }
         }
 
@@ -78,10 +85,35 @@ namespace LemonadeStand
             {
                 Ice ice = new Ice();
                 cubesOfIce.Add(ice);
-
             }
         }
 
+        public void RemoveIce(Player playerOne)
+        {
+            int removedIce = playerOne.recipe.RemoveIceFromInventory();
+            for (int i = 0; i < removedIce; i++)
+            {
+                cubesOfIce.RemoveAt(0);
+            }
+        }
+
+        public void RemoveAllIceFromInventoryAfterTurn()
+        {
+            int iceCount = cubesOfIce.Count;
+            for (int i = 0; i < iceCount; i++)
+            {
+                cubesOfIce.RemoveAt(0);
+            }
+        }
+
+        public void RemoveItemsAfterMakingLemonade(Player playerOne)
+        {
+            RemoveCups(playerOne);
+            RemoveLemons(playerOne);
+            RemoveSugar(playerOne);
+            RemoveIce(playerOne);
+            RemoveAllIceFromInventoryAfterTurn();
+        }
 
     }
 }

@@ -9,150 +9,147 @@ namespace LemonadeStand
     class Recipe
     {
 
-        Player playerOne;
-        public Recipe(Player player)
+        Inventory inventory;
+        public Recipe(Inventory inventory)
         {
-            playerOne = player;
-        }
-
-        public Recipe()
-        {
+            this.inventory = inventory;
         }
 
         public int pitchersUsed = 0;
-        public int cupsUsedPerPitcher = 12;
+        public int cupsUsedPerPitcher = 10;
         public int cupsUsed;
         public int lemonsUsed = 6;
         public int sugarUsed = 7;
-        public int iceUsed = 25;
+        public int iceUsed = 30;
 
         public int removedCupsFromInventory;
         public int removedLemonsFromInventory;
         public int removedSugarFromInventory;
         public int removedIceFromInventory;
 
-
-        public void MakeRecipe(Player playerOne)
+        public void MakeRecipe()
         {
-            
-            Console.WriteLine("It's time to create your lemonade recipe for the day! \nEach pitcher will produce 12 cups of lemonade to be sold.");
-            Console.WriteLine("We have a built in recipe for your convenience which includes 5 lemons, 7 cups of sugar, and 36 ice cubes (3 per cup).");
-            Console.WriteLine("Would you like to use the general recipe or create your own accomodating the weather? Please enter 'general' or 'create'.");
-            string choice = Console.ReadLine().ToLower();
+            string choice = UserInterface.DisplayRecipeWelcome();
             switch (choice)
             {
                 case "general":
-                    DecideNumberOfPitchers(playerOne);
-                    ShowCustomRecipe(playerOne);
+                    DecideNumberOfPitchers();
+                    ShowCustomRecipe();
                     break;
                 case "create":
-                    DecideLemonAmountForRecipe(playerOne);
-                    DecideSugarAmountForRecipe(playerOne);
-                    DecideIceAmountForRecipe(playerOne);
-                    DecideNumberOfPitchers(playerOne);
-                    ShowCustomRecipe(playerOne);
+                    DecideNumberOfPitchersCustom();
+                    CheckInventoryCups();
+                    DecideLemonAmountForRecipe();
+                    CheckInventoryLemons();
+                    DecideSugarAmountForRecipe();
+                    CheckInventorySugar();
+                    DecideIceAmountForRecipe();
+                    CheckInventoryIce();
+                    ShowCustomRecipe();
 
                     break;
                 default:
-                    Console.WriteLine("Not a valid response. Please type one of the options below.");
-                    MakeRecipe(playerOne);
+                    UserInterface.DisplayNotAValidResponse();
+                    MakeRecipe();
                     break;
             }
         }
 
-        public int DecideNumberOfPitchers(Player playerOne)
+        public int DecideNumberOfPitchers()
         {
-            Console.WriteLine("It's up to you to decide how many pitchers to make! Remember, each pitcher makes 12 cups. It would be wise to factor in the current forecast in your decision.");
-            Console.WriteLine("You can't save any unused lemonade as well.");
-            Console.WriteLine("How many pitchers would you like to make?");
-            pitchersUsed = int.Parse(Console.ReadLine());
-            cupsUsed = pitchersUsed * 12;
-            if ((playerOne.inventory.lemons.Count - lemonsUsed >= 0) && (playerOne.inventory.cupsOfSugar.Count - sugarUsed >= 0) && (playerOne.inventory.cubesOfIce.Count - iceUsed >= 0) && (playerOne.inventory.cups.Count - cupsUsed >= 0))
+            pitchersUsed = UserInterface.DisplayAskNumberOfPitchers(pitchersUsed);
+            cupsUsed = pitchersUsed * cupsUsedPerPitcher;
+            if ((inventory.lemons.Count - (lemonsUsed * pitchersUsed) >= 0) && (inventory.cupsOfSugar.Count - (sugarUsed * pitchersUsed) >= 0) && (inventory.cubesOfIce.Count - (iceUsed * pitchersUsed) >= 0) && (inventory.cups.Count - cupsUsed >= 0))
             {
-                Console.WriteLine("You chose to make " + pitchersUsed + " pitchers of lemonade for the day.");
+                UserInterface.DisplayNumberOfPitchers(pitchersUsed);
                 return pitchersUsed;
             }
             else
             {
-                Console.WriteLine("You don't have enough supplies to make that many pitchers!");
-                DecideNumberOfPitchers(playerOne);
-                return pitchersUsed;
+                UserInterface.DisplayNotEnoughItems();
+                return DecideNumberOfPitchers();
             }
         }
 
-        public int DecideLemonAmountForRecipe(Player playerOne)
+        public int DecideLemonAmountForRecipe()
         {
-            Console.WriteLine("Time to create your own lemonade recipe!");
-            Console.WriteLine("How many lemons per pitcher would you like to add?");
-            lemonsUsed = int.Parse(Console.ReadLine());
-            if (playerOne.inventory.lemons.Count - lemonsUsed >= 0)
+            lemonsUsed = UserInterface.DisplayLemonsUsed(lemonsUsed);
+            return lemonsUsed;
+        }
+
+        public void CheckInventoryLemons()
+        {
+            if (inventory.lemons.Count - (lemonsUsed * pitchersUsed) >= 0)
             {
-                return lemonsUsed;
+                return;
             }
             else
             {
-                Console.WriteLine("You don't have enough lemons! Choose less.");
-                DecideLemonAmountForRecipe(playerOne);
-                return lemonsUsed;
+                UserInterface.DisplayNotEnoughItems();
+                DecideLemonAmountForRecipe();
             }
         }
 
-        public int DecideSugarAmountForRecipe(Player playerOne)
+        public int DecideSugarAmountForRecipe()
         {
-            Console.WriteLine("How many cups of sugar per pitcher would you like to add?");
-            sugarUsed = int.Parse(Console.ReadLine());
-            if (playerOne.inventory.cupsOfSugar.Count - sugarUsed >= 0)
+            sugarUsed = UserInterface.DisplaySugarUsed(sugarUsed);
+            return sugarUsed;
+        }
+
+        public void CheckInventorySugar()
+        {
+            if (inventory.cupsOfSugar.Count - (sugarUsed * pitchersUsed) >= 0)
             {
-                return sugarUsed;
+                return;
             }
             else
             {
-                Console.WriteLine("You don't have enough cups of sugar! Choose less.");
-                DecideSugarAmountForRecipe(playerOne);
-                return sugarUsed;
+                UserInterface.DisplayNotEnoughItems();
+                DecideSugarAmountForRecipe();
             }
         }
 
-        public int DecideIceAmountForRecipe(Player playerOne)
+        public int DecideIceAmountForRecipe()
         {
-            Console.WriteLine("How many ice cubes per pitcher would you like to add?");
-            iceUsed = int.Parse(Console.ReadLine());
-            if (playerOne.inventory.cubesOfIce.Count - iceUsed >= 0)
+            iceUsed = UserInterface.DisplayIceUsed(iceUsed);
+            return iceUsed;
+        }
+
+        public void CheckInventoryIce()
+        {
+            if (inventory.cubesOfIce.Count - (iceUsed * pitchersUsed) >= 0)
             {
-                return iceUsed;
+                return;
             }
             else
             {
-                Console.WriteLine("You don't have enough ice cubes! Choose less.");
-                DecideIceAmountForRecipe(playerOne);
-                return iceUsed;
+                UserInterface.DisplayNotEnoughItems();
+                DecideIceAmountForRecipe();
             }
         }
-
-        public int DecidePitcherAmountForRecipe(Player playerOne)
+        public void CheckInventoryCups()
         {
-            Console.WriteLine("It's up to you to decide how many pitchers to make! Remember, each pitcher makes 12 cups. It would be wise to factor in the current forecast in your decision.");
-            Console.WriteLine("You can't save any unused lemonade as well.");
-            Console.WriteLine("How many pitchers would you like to make?");
-            pitchersUsed = int.Parse(Console.ReadLine());
-            cupsUsed = pitchersUsed * 12;
-            if ((playerOne.inventory.lemons.Count - lemonsUsed >= 0) && (playerOne.inventory.cupsOfSugar.Count - sugarUsed >= 0) && (playerOne.inventory.cubesOfIce.Count - iceUsed >= 0) && (playerOne.inventory.cups.Count - cupsUsed >= 0))
+            if (inventory.cups.Count - cupsUsed >= 0)
             {
-                Console.WriteLine("You chose to make " + pitchersUsed + " pitchers of lemonade for the day.");
-                return pitchersUsed;
+                return;
             }
             else
             {
-                Console.WriteLine("You don't have enough supplies to make that many pitchers!");
-                DecideNumberOfPitchers(playerOne);
-                return pitchersUsed;
+                UserInterface.DisplayNotEnoughItems();
+                DecideNumberOfPitchersCustom();
             }
         }
 
-        public void ShowCustomRecipe(Player playerOne)
+        public int DecideNumberOfPitchersCustom()
         {
-            Console.WriteLine("Your recipe consists of {0} lemons, {1} cups of sugar, {2} cubes of ice, and {3} cups per pitcher",lemonsUsed, sugarUsed, iceUsed, cupsUsedPerPitcher);
-            Console.ReadKey();
+            pitchersUsed = UserInterface.DisplayCustomPitcher(pitchersUsed);
+            cupsUsed = pitchersUsed * cupsUsedPerPitcher;
+            return pitchersUsed;
+        }
+
+        public void ShowCustomRecipe()
+        {
+            UserInterface.DisplayCustomRecipe(lemonsUsed, sugarUsed, iceUsed);
         }
 
         public int RemoveCupsFromInventory()
@@ -178,13 +175,6 @@ namespace LemonadeStand
             removedIceFromInventory = pitchersUsed * iceUsed;
             return removedIceFromInventory;
         }
-
-
-
-
-
-
-
     }
 }
 

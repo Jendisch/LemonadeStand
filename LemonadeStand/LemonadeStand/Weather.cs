@@ -8,25 +8,31 @@ namespace LemonadeStand
 {
     class Weather
     {
+
+        public Weather(Random random)
+        {
+            
+        }
+
         public int temperature;
         public string condition;
         public int forecastedTemperature;
         public string forecastedCondition;
 
-
-        Random random = new Random();
+        
 
         public string[] weatherTemperature = new string[] { "50-60", "61-70", "71-80", "81-90", "91-100" };
-        public string[] weatherCondition = new string[] { "sunny", "partly cloudy", "cloudy", "overcast", "foggy", "rainy" };
+        public string[] weatherCondition = new string[] { "sunny", "partly cloudy", "cloudy", "overcast", "foggy", "rainy", "thunderstorming" };
 
-
-        public void GetCurrentForecast()
+        
+        public void GetCurrentForecast(Random random)
         {
-            GetCurrentTemperature();
-            GetCurrentCondition();
+            Console.Clear();
+            GetCurrentTemperature(random);
+            GetCurrentCondition(random);
         }
 
-        public void GetCurrentTemperature()
+        public void GetCurrentTemperature(Random random)
         {
             int weatherRandom = random.Next(0, weatherTemperature.Length);
             switch (weatherRandom)
@@ -51,41 +57,36 @@ namespace LemonadeStand
             }
         }
 
-        public void GetCurrentCondition()
+        public void GetCurrentCondition(Random random)
         {
             int conditionRandom = random.Next(0, weatherCondition.Length);
             condition = weatherCondition[conditionRandom];
         }
 
-        public void GetWeatherForcast()
+        public void GetWeatherForcast(Random random)
         {
-            Console.WriteLine("Would you like to see the weather forcast for tomorrow? Please type 'yes' or 'no'.");
-            string choice = Console.ReadLine().ToLower();
+            string choice = UserInterface.AskToSeeTomorrowForecast();
             switch (choice)
             {
                 case "yes":
-                    FindOneDayForecast();
+                    FindOneDayForecast(random);
                     break;
                 case "no":
                     break;
                 default:
-                    Console.WriteLine("Not a valid response. Please type one of the options below.");
-                    GetWeatherForcast();
+                    UserInterface.DisplayNotAValidResponse();
+                    GetWeatherForcast(random);
                     break;
             }
         }
         
-        private void FindOneDayForecast()
+        private void FindOneDayForecast(Random random)
         {
             Console.Clear();
             forecastedTemperature = random.Next(50, 101);
             int conditionRandom = random.Next(0, weatherCondition.Length);
             forecastedCondition = weatherCondition[conditionRandom];
-            Console.WriteLine("Your forecasted weather for tomorrow is " + forecastedTemperature + " degrees and " + forecastedCondition + ".");
-            Console.WriteLine("Please hit any key to continue.");
-            Console.ReadKey();
+            UserInterface.DisplayTomorrowForecast(forecastedTemperature, forecastedCondition);
         }
-
-
     }
 }

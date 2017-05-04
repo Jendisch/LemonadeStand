@@ -9,11 +9,11 @@ namespace LemonadeStand
     class Wallet
     {
 
-        public double wallet = 20;
+        public double wallet = 30;
 
         public void ShowMoneyAvailable()
         {
-            Console.WriteLine("Money available to spend = " + wallet.ToString("C"));
+            UserInterface.DisplayMoneyAvailable(wallet);
         }
 
         public int CheckIfBrokeForCups(double price, int amountOfCupsBought)
@@ -25,8 +25,7 @@ namespace LemonadeStand
             }
             else
             {
-                Console.WriteLine("You do not have enough funds to make this purchase. Press any key to continue.");
-                Console.ReadKey();
+                UserInterface.DisplayNotEnoughFunds();
                 return amountOfCupsBought = 0;
             }
         }
@@ -40,8 +39,7 @@ namespace LemonadeStand
             }
             else
             {
-                Console.WriteLine("You do not have enough funds to make this purchase. Press any key to continue.");
-                Console.ReadKey();
+                UserInterface.DisplayNotEnoughFunds();
                 return amountOfLemonsBought = 0;
             }
         }
@@ -55,8 +53,7 @@ namespace LemonadeStand
             }
             else
             {
-                Console.WriteLine("You do not have enough funds to make this purchase. Press any key to continue.");
-                Console.ReadKey();
+                UserInterface.DisplayNotEnoughFunds();
                 return amountOfSugarBought = 0;
             }
         }
@@ -70,8 +67,7 @@ namespace LemonadeStand
             }
             else
             {
-                Console.WriteLine("You do not have enough funds to make this purchase. Press any key to continue.");
-                Console.ReadKey();
+                UserInterface.DisplayNotEnoughFunds();
                 return amountOfIceBought = 0;
             }
         }

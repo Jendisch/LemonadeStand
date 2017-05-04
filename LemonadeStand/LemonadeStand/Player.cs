@@ -8,9 +8,15 @@ namespace LemonadeStand
 {
     class Player
     {
+        
         public string playerName;
         public Inventory inventory = new Inventory();
         public Wallet wallet = new Wallet();
-        public Recipe recipe = new Recipe();
+        public Recipe recipe;
+
+        public Player()
+        {
+            recipe = new Recipe(inventory);
+        }
     }
 }

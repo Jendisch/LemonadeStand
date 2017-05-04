@@ -12,44 +12,46 @@ namespace LemonadeStand
         public Player playerOne;
         public int lengthOfGame;
 
-
-        public void StartGame()
+        public void StartGame(Random random)
         {
             WelcomeToGame();
             GetPlayerName();
             ChooseGameLength();
             Day day = new Day(playerOne);
-            day.TakeTurn(lengthOfGame);
-            Console.ReadKey();
+            day.TakeTurn(lengthOfGame, day, random);
+            ShowEndingStats();
+            AskToPlayAgain(random);
         }
-
-
-
-
 
         private void WelcomeToGame()
         {
-            Console.WriteLine("Welcome to Lemonade Stand!");
-            Console.WriteLine("You have 7, 14, or 21 days to make as much money as possible, and you’ve decided to open a lemonade stand! You’ll have complete control over your business, including pricing, quality control, inventory control, and purchasing supplies. Buy your ingredients, set your recipe, and start selling!");
-            Console.WriteLine("You can choose to go with the original recipe or you can choose to experiment a little bit and try to see if you can find a better one! Make sure to buy all of your ingredients or you won't be able to sell.");
-            Console.WriteLine("You'll also have to deal with the weather... and it will play a big role in amount of potential customers as well as whether people choose to buy your lemonade. My advice to you is to read the weather report every day! When the weather is bad (overcast/rain) don't expect quite as many customers or for them to be in the mood to stop for a drink. On the other hand, if the weather is hot and sunny you might just be able to sell more! Adjust your prices accordingly.");
-            Console.WriteLine("Good luck! Press any key to continue.");
-            Console.ReadKey();
-            Console.Clear();
+            UserInterface.WelcomePlayerToGame();
+            string choice = UserInterface.DisplayNewOrLoad();
+            switch (choice)
+            {
+                case "new":
+                    break;
+                case "load":
+                    
+                    break;
+                default:
+                    UserInterface.DisplayNotAValidResponse();
+                    WelcomeToGame();
+                    break;
+            }
         } 
 
+
+        //UserInterface.DisplayRules();
         private void GetPlayerName()
         {
             playerOne = new Player();
-            Console.WriteLine("Please type your name and press enter.");
-            playerOne.playerName = Console.ReadLine();
-            Console.WriteLine("Welcome " + playerOne.playerName + ". Let's get started.");
+            UserInterface.RetrievePlayerName(playerOne);
         }
 
-        private int ChooseGameLength()
+        private void ChooseGameLength()
         {
-            Console.WriteLine("\nHow many days would you like to play the game for? Please choose 7, 14, or 21 and hit any key to continue.");
-            string choice = Console.ReadLine();
+            string choice = UserInterface.DecideGameLength();
             switch (choice)
             {
                 case "1":
@@ -65,13 +67,37 @@ namespace LemonadeStand
                     lengthOfGame = 21;
                     break;
                 default:
-                    Console.WriteLine("Not a valid response. Please type one of the options below.");
+                    UserInterface.DisplayNotAValidResponse();
                     ChooseGameLength();
                     break;
             }
             Console.Clear();
-            return lengthOfGame;
         }
 
+        private void ShowEndingStats()
+        {
+            UserInterface.DisplayCongrats(playerOne);
+            double totalProfit = (playerOne.wallet.wallet - 30);
+            string profit = totalProfit.ToString("C");
+            UserInterface.DisplayTotalProfit(profit);
+        }
+
+        private void AskToPlayAgain(Random random)
+        {
+            string choice = UserInterface.DisplayPlayAgainQuestion();
+            if (choice == "yes")
+            {
+                StartGame(random);
+            }
+            else if (choice == "no")
+            {
+                return;
+            }
+            else
+            {
+                UserInterface.DisplayNotAValidResponse();
+                AskToPlayAgain(random);
+            }
+        }
     }
 }

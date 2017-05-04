@@ -11,20 +11,20 @@ namespace LemonadeStand
 
         public override double GetLowPrice()
         {
-            lowCost = 0.98;
+            lowCost = 1.00;
             return lowCost;
 
         }
 
         public override double GetMediumPrice()
         {
-            mediumCost = 2.10;
+            mediumCost = 2.25;
             return mediumCost;
         }
 
         public override double GetHighPrice()
         {
-            highCost = 3.80;
+            highCost = 4.00;
             return highCost;
         }
 
