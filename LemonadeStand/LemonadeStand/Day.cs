@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,17 @@ namespace LemonadeStand
         public double moneySpentOnInventory;
         public string netProfit;
         public string netDeficit;
+        public double totalProfit;
+        public int dayNumber;
+        public int savedLengthOfGame;
 
-        public void TakeTurn(int lengthOfGame, Day day, Random random)
+        public void TakeTurn(int lengthOfGame, Day day, Random random, int dayStart = 1)
         {
             moneySpentOnInventory = 0;
-            for (var i = 1; i <= lengthOfGame; i++)
+            for (var i = dayStart; i <= lengthOfGame; i++)
             {
+                dayNumber = i;
+                savedLengthOfGame = lengthOfGame;
                 Store store = new Store(playerOne);
                 Weather weather = new Weather(random);
                 weather.GetCurrentForecast(random);
@@ -46,6 +52,9 @@ namespace LemonadeStand
                 GenerateAmountOfPotentialCustomers(weather, random);
                 CreateCustomers(day, playerOne, random);
                 FindCustomersAndProfit(store);
+                totalProfit = (playerOne.wallet.wallet - 30);
+                SavedGame saved = new SavedGame(playerOne, dayNumber, savedLengthOfGame, totalProfit);
+                saved.AskToSaveGame(playerOne, dayNumber, savedLengthOfGame, totalProfit);
                 Console.ReadKey();
             }
         }
@@ -243,6 +252,41 @@ namespace LemonadeStand
             moneySpentOnInventory = store.GetMoneySpentOnInventory();
             FindProfitOrDeficit(store);
         }
+
+        //public void AskToSaveGame()
+        //{
+        //    string choice = UserInterface.DisplayAskToSaveGame();
+        //    if (choice == "yes")
+        //    {
+        //        uniquePlayerName = UserInterface.ReceiveUniqueName();
+        //        CheckDatabaseForSavedGame();
+        //    }
+        //    else if (choice == "no")
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        UserInterface.DisplayNotAValidResponse();
+        //        AskToSaveGame();
+        //    }
+        //}
+
+        //public void CheckDatabaseForSavedGame()
+        //{
+        //    DatabaseConnection connect = new DatabaseConnection();
+        //    bool player = connect.SearchForUniqueName(uniquePlayerName);
+        //    if(player == true)
+        //    {
+        //        connect.UpdateCurrentDatabaseRecord(playerOne, dayNumber, savedLengthOfGame, totalProfit, uniquePlayerName);
+        //    }
+        //    else if (player == false)
+        //    {
+        //        connect.InsertIntoDatabase(playerOne, dayNumber, savedLengthOfGame, totalProfit, uniquePlayerName);
+        //    }
+        //}
+
+
     }
 }
 

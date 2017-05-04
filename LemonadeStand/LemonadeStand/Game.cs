@@ -8,13 +8,25 @@ namespace LemonadeStand
 {
     class Game
     {
-
+       
         public Player playerOne;
         public int lengthOfGame;
+        public int currentDay;
+        public Game()
+        {
+
+        }
+
+        public Game(Player playerOne, int lengthOfGame)
+        {
+            this.playerOne = playerOne;
+            this.lengthOfGame = lengthOfGame;
+        }
+
 
         public void StartGame(Random random)
         {
-            WelcomeToGame();
+            UserInterface.DisplayRules();
             GetPlayerName();
             ChooseGameLength();
             Day day = new Day(playerOne);
@@ -23,26 +35,13 @@ namespace LemonadeStand
             AskToPlayAgain(random);
         }
 
-        private void WelcomeToGame()
+        public void LoadDirectlyToTurn()
         {
-            UserInterface.WelcomePlayerToGame();
-            string choice = UserInterface.DisplayNewOrLoad();
-            switch (choice)
-            {
-                case "new":
-                    break;
-                case "load":
-                    
-                    break;
-                default:
-                    UserInterface.DisplayNotAValidResponse();
-                    WelcomeToGame();
-                    break;
-            }
-        } 
-
-
-        //UserInterface.DisplayRules();
+            Random newRandom = new Random();
+            Day day = new Day(playerOne);
+            day.TakeTurn(lengthOfGame, day, newRandom, currentDay);
+        }   
+        
         private void GetPlayerName()
         {
             playerOne = new Player();
@@ -54,9 +53,6 @@ namespace LemonadeStand
             string choice = UserInterface.DecideGameLength();
             switch (choice)
             {
-                case "1":
-                    lengthOfGame = 1;
-                    break;
                 case "7":
                     lengthOfGame = 7;
                     break;

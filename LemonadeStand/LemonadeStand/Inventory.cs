@@ -15,6 +15,25 @@ namespace LemonadeStand
         public List<Sugar> cupsOfSugar = new List<Sugar>();
         public List<Ice> cubesOfIce = new List<Ice>();
 
+        public Inventory()
+        {
+
+        }
+
+        public Inventory(List<Cup> cups, List<Lemon> lemons, List<Sugar> cupsOfSugar)
+        {
+            this.cups = cups;
+            this.lemons = lemons;
+            this.cupsOfSugar = cupsOfSugar;
+        }
+
+        public Inventory(int cups, int lemons, int sugar)
+        {
+            AddCups(cups);
+            AddLemons(lemons);
+            AddSugar(sugar);
+        }
+
 
         public void ShowItemInventory()
         {

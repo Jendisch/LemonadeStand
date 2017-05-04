@@ -124,6 +124,34 @@ namespace LemonadeStand
             Console.WriteLine("You currently have " + playerOne.wallet.wallet.ToString("C") + " in your wallet.");
         }
 
+        public static string DisplayAskToSaveGame()
+        {
+            Console.WriteLine("Would you like to save your game? Type 'yes' or 'no'.");
+            string choice = Console.ReadLine().ToLower();
+            return choice;
+        }
+
+        public static string ReceiveUniqueName()
+        {
+            Console.WriteLine("Please enter a unique name to save your game under (different than your name given at the beginning of the game). It can contain a mixture of numbers or characters.");
+            Console.WriteLine("If you are updating an existing game. Use the same unique name.");
+            string choice = Console.ReadLine();
+            return choice;
+        }
+
+        public static string AskForUniqueName()
+        {
+            Console.WriteLine("Please enter your unique name that your gave is saved under!");
+            Console.WriteLine("If you can't remember your unique game name, please type 'idk' to go back.");
+            string choice = Console.ReadLine();
+            return choice;
+        }
+
+        public static void DisplayCantFindGame()
+        {
+            Console.WriteLine("I'm sorry we couldn't find your game! Please try again.");
+        }
+
 
         //User interface for Store Class
 

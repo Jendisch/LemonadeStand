@@ -52,13 +52,17 @@
     <Compile Include="Inventory.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Lemon.cs" />
+    <Compile Include="LoadGame.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PreGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipe.cs" />
+    <Compile Include="SavedGame.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="Sugar.cs" />
     <Compile Include="UserInterface.cs" />
+    <Compile Include="VariableObjects.cs" />
     <Compile Include="Wallet.cs" />
     <Compile Include="Weather.cs" />
   </ItemGroup>

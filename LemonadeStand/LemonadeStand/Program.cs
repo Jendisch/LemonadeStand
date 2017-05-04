@@ -11,8 +11,12 @@ namespace LemonadeStand
         static void Main(string[] args)
         {
             Random random = new Random();
-            Game game = new Game();
-            game.StartGame(random);
+            PreGame preGame = new PreGame(random);
+            preGame.ChooseNewOrOldGame(random);
+
+
+         
+
         }
     }
 }

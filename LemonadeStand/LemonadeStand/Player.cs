@@ -18,5 +18,13 @@ namespace LemonadeStand
         {
             recipe = new Recipe(inventory);
         }
+
+        public Player(string playerName, Inventory inventory, Wallet wallet)
+        {
+            this.playerName = playerName;
+            this.inventory = inventory;
+            this.wallet = wallet;
+            recipe = new Recipe(inventory);
+        }
     }
 }

@@ -11,6 +11,16 @@ namespace LemonadeStand
 
         public double wallet = 30;
 
+        public Wallet()
+        {
+
+        }
+
+        public Wallet(double wallet)
+        {
+            this.wallet = wallet;
+        }
+
         public void ShowMoneyAvailable()
         {
             UserInterface.DisplayMoneyAvailable(wallet);
