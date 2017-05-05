@@ -16,6 +16,16 @@ Unique_Name varchar (50) NOT NULL
 INSERT INTO Saved_Games VALUES ('Jennifer', 75.00, 5, 7, 100, 75, 50, 0, 45.00, 'Jendisch')
 
 SELECT Unique_Name FROM Saved_Games
-WHERE Unique_Name LIKE '%sample_text%';
+WHERE Unique_Name LIKE 'Jendisch';
+
+UPDATE Saved_Games
+SET Player_Name = 'Jennifer', Current_Wallet = 80.00, Current_Day = 4
+WHERE Unique_Name = 'Jendisch'
+
+ALTER TABLE Saved_Games
+DROP COLUMN Ice_Inventory;
+
+SELECT * FROM Saved_Games
+WHERE Unique_Name LIKE 'Jendisch';
 
 SELECT * FROM Saved_Games;

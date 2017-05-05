@@ -37,6 +37,7 @@ namespace LemonadeStand
                 insertCommand.Parameters.AddWithValue("@Sugar_Inventory", playerOne.inventory.cupsOfSugar.Count);
                 insertCommand.Parameters.AddWithValue("@Net_Money", totalProfit);
                 insertCommand.Parameters.AddWithValue("@Unique_Name", uniquePlayerName);
+
                 insertCommand.ExecuteNonQuery();
             }
         }
@@ -70,17 +71,16 @@ namespace LemonadeStand
         {
             connect.ConnectionString = "Server=localhost;Database=LemonadeStand;Trusted_Connection=True";
             connect.Open();
-            string query = "UPDATE Saved_Games SET (Player_Name = @Player_Name, Current_Wallet = @Current_Wallet, Current_Day = @Current_Day, Length_Of_Game = @Length_Of_Game, Cup_Inventory = @Cup_Inventory, Lemon_Inventory = @Lemon_Inventory, Sugar_Inventory = @Sugar_Inventory, Net_Money = @Net_Money, Unique_Name = @Unique_Name) WHERE Unique_Name = '@Unique_Name'";
+            string query = "UPDATE Saved_Games SET Current_Wallet = @Current_Wallet, Current_Day = @Current_Day, Cup_Inventory = @Cup_Inventory, Lemon_Inventory = @Lemon_Inventory, Sugar_Inventory = @Sugar_Inventory, Net_Money = @Net_Money WHERE Unique_Name = @Unique_Name";
             SqlCommand updateCommand = new SqlCommand(query, connect);
-            updateCommand.Parameters.AddWithValue("@Player_Name", playerOne.playerName);
             updateCommand.Parameters.AddWithValue("@Current_Wallet", playerOne.wallet.wallet);
             updateCommand.Parameters.AddWithValue("@Current_Day", dayNumber);
-            updateCommand.Parameters.AddWithValue("@Length_Of_Game", savedLengthOfGame);
             updateCommand.Parameters.AddWithValue("@Cup_Inventory", playerOne.inventory.cups.Count);
             updateCommand.Parameters.AddWithValue("@Lemon_Inventory", playerOne.inventory.lemons.Count);
             updateCommand.Parameters.AddWithValue("@Sugar_Inventory", playerOne.inventory.cupsOfSugar.Count);
             updateCommand.Parameters.AddWithValue("@Net_Money", totalProfit);
             updateCommand.Parameters.AddWithValue("@Unique_Name", uniquePlayerName);
+
             updateCommand.ExecuteNonQuery();
         }
 
