@@ -35,6 +35,8 @@ namespace LemonadeStand
                         ChooseNewOrOldGame(random);
                     }
                     game.LoadDirectlyToTurn();
+                    game.ShowEndingStats();
+                    game.AskToPlayAgain(random);
                     break;
                 default:
                     UserInterface.DisplayNotAValidResponse();

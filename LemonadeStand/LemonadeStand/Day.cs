@@ -216,7 +216,7 @@ namespace LemonadeStand
             {
                 dailyProfit = playerOne.recipe.cupsUsed * pricePerCup;
                 UserInterface.DisplayNotEnoughLemonadeMade();
-                DisplayCustomersAndProfit(store);
+                DisplayCustomersAndProfitForNotEnoughLemonadeMade(store, playerOne.recipe.cupsUsed);
             }
             else if (customers.Count <= playerOne.recipe.cupsUsed)
             {
@@ -253,40 +253,16 @@ namespace LemonadeStand
             FindProfitOrDeficit(store);
         }
 
-        //public void AskToSaveGame()
-        //{
-        //    string choice = UserInterface.DisplayAskToSaveGame();
-        //    if (choice == "yes")
-        //    {
-        //        uniquePlayerName = UserInterface.ReceiveUniqueName();
-        //        CheckDatabaseForSavedGame();
-        //    }
-        //    else if (choice == "no")
-        //    {
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        UserInterface.DisplayNotAValidResponse();
-        //        AskToSaveGame();
-        //    }
-        //}
-
-        //public void CheckDatabaseForSavedGame()
-        //{
-        //    DatabaseConnection connect = new DatabaseConnection();
-        //    bool player = connect.SearchForUniqueName(uniquePlayerName);
-        //    if(player == true)
-        //    {
-        //        connect.UpdateCurrentDatabaseRecord(playerOne, dayNumber, savedLengthOfGame, totalProfit, uniquePlayerName);
-        //    }
-        //    else if (player == false)
-        //    {
-        //        connect.InsertIntoDatabase(playerOne, dayNumber, savedLengthOfGame, totalProfit, uniquePlayerName);
-        //    }
-        //}
-
-
+        public void DisplayCustomersAndProfitForNotEnoughLemonadeMade(Store store, int number)
+        {
+            Console.Clear();
+            playerOne.wallet.wallet += dailyProfit;
+            string profit = dailyProfit.ToString("C");
+            number = customers.Count;
+            UserInterface.DisplayDailyProfitAndWallet(playerOne, profit, number);
+            moneySpentOnInventory = store.GetMoneySpentOnInventory();
+            FindProfitOrDeficit(store);
+        }
     }
 }
 

@@ -70,7 +70,7 @@ namespace LemonadeStand
             Console.Clear();
         }
 
-        private void ShowEndingStats()
+        public void ShowEndingStats()
         {
             UserInterface.DisplayCongrats(playerOne);
             double totalProfit = (playerOne.wallet.wallet - 30);
@@ -78,12 +78,13 @@ namespace LemonadeStand
             UserInterface.DisplayTotalProfit(profit);
         }
 
-        private void AskToPlayAgain(Random random)
+        public void AskToPlayAgain(Random random)
         {
             string choice = UserInterface.DisplayPlayAgainQuestion();
             if (choice == "yes")
             {
-                StartGame(random);
+                PreGame preGame = new PreGame(random);
+                preGame.ChooseNewOrOldGame(random);
             }
             else if (choice == "no")
             {

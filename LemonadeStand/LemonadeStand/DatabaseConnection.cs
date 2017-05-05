@@ -56,7 +56,6 @@ namespace LemonadeStand
                     if (reader.Read())
                     {
                         string uniqueName = reader.GetString(0);
-                        Console.WriteLine(uniqueName);
                         return true;
                     } 
                     else
