@@ -8,8 +8,9 @@ namespace LemonadeStand
 {
     class Game
     {
-       
+
         public Player playerOne;
+        public Player playerTwo;
         public int lengthOfGame;
         public int currentDay;
         public Game()
@@ -24,28 +25,51 @@ namespace LemonadeStand
         }
 
 
-        public void StartGame(Random random)
+        public void StartGameOnePlayer(Random random)
         {
             UserInterface.DisplayRules();
             GetPlayerName();
             ChooseGameLength();
             Day day = new Day(playerOne);
-            day.TakeTurn(lengthOfGame, day, random);
+            day.TakeTurnOnePlayer(lengthOfGame, day, random);
             ShowEndingStats();
             AskToPlayAgain(random);
+        }
+
+        public void StartGameTwoPlayers(Random random)
+        {
+            UserInterface.DisplayRulesTwoPlayers();
+            GetPlayerOneName();
+            GetPlayerTwoName();
+            ChooseGameLength();
+            Day day = new Day(playerOne, playerTwo);
+            day.TakeTurnTwoPlayers(lengthOfGame, day, random);
+
         }
 
         public void LoadDirectlyToTurn()
         {
             Random newRandom = new Random();
             Day day = new Day(playerOne);
-            day.TakeTurn(lengthOfGame, day, newRandom, currentDay);
-        }   
-        
+            day.TakeTurnOnePlayer(lengthOfGame, day, newRandom, currentDay);
+        }
+
         private void GetPlayerName()
         {
             playerOne = new Player();
             UserInterface.RetrievePlayerName(playerOne);
+        }
+
+        private void GetPlayerOneName()
+        {
+            playerOne = new Player();
+            UserInterface.RetrievePlayerOneName(playerOne);
+        }
+
+        private void GetPlayerTwoName()
+        {
+            playerTwo = new Player();
+            UserInterface.RetrievePlayerTwoName(playerTwo);
         }
 
         private void ChooseGameLength()

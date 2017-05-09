@@ -37,28 +37,28 @@ namespace LemonadeStand
             return customerBuys;
         }
 
-        public double FindCustomerPriceLimit(Random random)
+        private double FindCustomerPriceLimit(Random random)
         {
             int amountCustomerWillingToPay = random.Next(0, maxCostCustomerWillPay.Count);
             amountWillingToPay = maxCostCustomerWillPay[amountCustomerWillingToPay];
             return amountWillingToPay;
         }
 
-        public int FindSourPreference(Random random)
+        private int FindSourPreference(Random random)
         {
             int preference = random.Next(0, sourPreferenceOptions.Count);
             sourPreference = sourPreferenceOptions[preference];
             return sourPreference;
         }
 
-        public int FindSweetnessPreference(Random random)
+        private int FindSweetnessPreference(Random random)
         {
             int preference = random.Next(0, sweetnessPreferenceOptions.Count);
             sweetnessPreference = sweetnessPreferenceOptions[preference];
             return sweetnessPreference;
         }
 
-        public void OddsToBuySourPreference(Player playerOne)
+        private void OddsToBuySourPreference(Player playerOne)
         {
             if (playerOne.recipe.lemonsUsed >= 5)
             {
@@ -84,7 +84,7 @@ namespace LemonadeStand
             }
         }
 
-        public void OddsToBuySweetnessPreference(Player playerOne)
+        private void OddsToBuySweetnessPreference(Player playerOne)
         {
             if (playerOne.recipe.sugarUsed >= 5)
             {
@@ -110,7 +110,7 @@ namespace LemonadeStand
             }
         }
 
-        public bool CheckPriceLimit(Day day)
+        private bool CheckPriceLimit(Day day)
         {
             if (amountWillingToPay >= day.pricePerCup)
             {
@@ -124,7 +124,7 @@ namespace LemonadeStand
             }
         }
 
-        public bool WillingnessToBuyOdds()
+        private bool WillingnessToBuyOdds()
         {
             if (willingnessToBuy >= 1)
             {
@@ -136,7 +136,7 @@ namespace LemonadeStand
             }
         }
 
-        public bool DecideIfCustomerWillBuy()
+        private bool DecideIfCustomerWillBuy()
         {
             decision = WillingnessToBuyOdds();
             if (buy == true && decision == true)

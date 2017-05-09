@@ -35,13 +35,22 @@ namespace LemonadeStand
         }
 
 
-        public void ShowItemInventory()
+        public void ShowItemInventoryPlayerOne(Player playerOne)
         {
             int cupCount = cups.Count;
             int lemonCount = lemons.Count;
             int sugarCount = cupsOfSugar.Count;
             int iceCount = cubesOfIce.Count;
-            UserInterface.DisplayInventory(cupCount, lemonCount, sugarCount, iceCount);
+            UserInterface.DisplayInventoryPlayerOne(playerOne, cupCount, lemonCount, sugarCount, iceCount);
+        }
+
+        public void ShowItemInventoryPlayerTwo(Player playerTwo)
+        {
+            int cupCount = cups.Count;
+            int lemonCount = lemons.Count;
+            int sugarCount = cupsOfSugar.Count;
+            int iceCount = cubesOfIce.Count;
+            UserInterface.DisplayInventoryPlayerTwo(playerTwo, cupCount, lemonCount, sugarCount, iceCount);
         }
 
         public void AddCups(int amountOfCupsBought)
@@ -53,13 +62,22 @@ namespace LemonadeStand
             }
         }
 
-        public void RemoveCups(Player playerOne)
+        private void RemoveCups(Player playerOne)
         {
                 int removedCups = playerOne.recipe.RemoveCupsFromInventory();
                 for (int i = 0; i < removedCups; i++)
                 {
                     cups.RemoveAt(0);
                 }
+        }
+
+        private void RemoveCupsPlayerTwo(Player playerTwo)
+        {
+            int removedCups = playerTwo.recipe.RemoveCupsFromInventory();
+            for (int i = 0; i < removedCups; i++)
+            {
+                cups.RemoveAt(0);
+            }
         }
 
         public void AddLemons(int amountOfLemonsBought)
@@ -71,9 +89,18 @@ namespace LemonadeStand
             }
         }
 
-        public void RemoveLemons(Player playerOne)
+        private void RemoveLemons(Player playerOne)
         {
             int removedLemons = playerOne.recipe.RemoveLemonsFromInventory();
+            for (int i = 0; i < removedLemons; i++)
+            {
+                lemons.RemoveAt(0);
+            }
+        }
+
+        private void RemoveLemonsPlayerTwo(Player playerTwo)
+        {
+            int removedLemons = playerTwo.recipe.RemoveLemonsFromInventory();
             for (int i = 0; i < removedLemons; i++)
             {
                 lemons.RemoveAt(0);
@@ -89,9 +116,18 @@ namespace LemonadeStand
             }
         }
 
-        public void RemoveSugar(Player playerOne)
+        private void RemoveSugar(Player playerOne)
         {
             int removedSugar = playerOne.recipe.RemoveSugarFromInventory();
+            for (int i = 0; i < removedSugar; i++)
+            {
+                cupsOfSugar.RemoveAt(0);
+            }
+        }
+
+        private void RemoveSugarPlayerTwo(Player playerTwo)
+        {
+            int removedSugar = playerTwo.recipe.RemoveSugarFromInventory();
             for (int i = 0; i < removedSugar; i++)
             {
                 cupsOfSugar.RemoveAt(0);
@@ -107,7 +143,7 @@ namespace LemonadeStand
             }
         }
 
-        public void RemoveIce(Player playerOne)
+        private void RemoveIce(Player playerOne)
         {
             int removedIce = playerOne.recipe.RemoveIceFromInventory();
             for (int i = 0; i < removedIce; i++)
@@ -116,7 +152,16 @@ namespace LemonadeStand
             }
         }
 
-        public void RemoveAllIceFromInventoryAfterTurn()
+        private void RemoveIcePlayerTwo(Player playerTwo)
+        {
+            int removedIce = playerTwo.recipe.RemoveIceFromInventory();
+            for (int i = 0; i < removedIce; i++)
+            {
+                cubesOfIce.RemoveAt(0);
+            }
+        }
+
+        private void RemoveAllIceFromInventoryAfterTurn()
         {
             int iceCount = cubesOfIce.Count;
             for (int i = 0; i < iceCount; i++)
@@ -134,6 +179,14 @@ namespace LemonadeStand
             RemoveAllIceFromInventoryAfterTurn();
         }
 
+        public void RemoveItemsAfterMakingLemonadePlayerTwo(Player playerTwo)
+        {
+            RemoveCupsPlayerTwo(playerTwo);
+            RemoveLemonsPlayerTwo(playerTwo);
+            RemoveSugarPlayerTwo(playerTwo);
+            RemoveIcePlayerTwo(playerTwo);
+            RemoveAllIceFromInventoryAfterTurn();
+        }
     }
 }
         

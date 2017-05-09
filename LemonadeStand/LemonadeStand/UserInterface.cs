@@ -18,11 +18,30 @@ namespace LemonadeStand
             Console.WriteLine("Welcome to Lemonade Stand!");
         }
 
+        public static string AskOneOrTwoPlayers()
+        {
+            Console.WriteLine("Would you like to play with 1 or 2 players?");
+            string choice = Console.ReadLine();
+            return choice;
+        }
+
         public static void DisplayRules()
         {
             Console.WriteLine("You have 7, 14, or 21 days to make as much money as possible, and you’ve decided to open a lemonade stand! You’ll have complete control over your business, including pricing, quality control, inventory control, and purchasing supplies. Buy your ingredients, set your recipe, and start selling!");
             Console.WriteLine("You can choose to go with the original recipe or you can choose to experiment a little bit and try to see if you can find a better one! Make sure to buy all of your ingredients or you won't be able to sell.");
             Console.WriteLine("You'll also have to deal with the weather... and it will play a big role in amount of potential customers as well as whether people choose to buy your lemonade. My advice to you is to read the weather report every day! When the weather is bad (overcast/rain) don't expect quite as many customers or for them to be in the mood to stop for a drink. On the other hand, if the weather is hot and sunny you might just be able to sell more! Adjust your prices accordingly.");
+            Console.WriteLine("You have $30 to start with in your wallet. Good luck! Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public static void DisplayRulesTwoPlayers()
+        {
+            Console.WriteLine("You each have 7, 14, or 21 days to make as much money as possible, and you both have decided to open a lemonade stand! You’ll have complete control over your competing businesses, including pricing, quality control, inventory control, and purchasing supplies. Buy your ingredients, set your recipe, and start selling!");
+            Console.WriteLine("You can choose to go with the original recipe or you can choose to experiment a little bit and try to see if you can find a better one! Make sure to buy all of your ingredients or you won't be able to sell.");
+            Console.WriteLine("You'll also have to deal with the weather... and it will play a big role in amount of potential customers as well as whether people choose to buy your lemonade. My advice to you is to read the weather report every day! When the weather is bad (overcast/rain) don't expect quite as many customers or for them to be in the mood to stop for a drink. On the other hand, if the weather is hot and sunny you might just be able to sell more! Adjust your prices accordingly.");
+            Console.WriteLine("At the beginning of each turn, the weather will show for the current day. Then player one will get to choose a recipe and player two will follow.");
+            Console.WriteLine("Each player will have the option of saving after every turn.");
             Console.WriteLine("You have $30 to start with in your wallet. Good luck! Press any key to continue.");
             Console.ReadKey();
             Console.Clear();
@@ -40,6 +59,18 @@ namespace LemonadeStand
             Console.WriteLine("Please type your name and press enter.");
             playerOne.playerName = Console.ReadLine();
             Console.WriteLine("Welcome " + playerOne.playerName + ". Let's get started.");
+        }
+
+        public static void RetrievePlayerOneName(Player playerOne)
+        {
+            Console.WriteLine("Player one, please type your name and press enter.");
+            playerOne.playerName = Console.ReadLine();
+        }
+
+        public static void RetrievePlayerTwoName(Player playerTwo)
+        {
+            Console.WriteLine("Player two, please type your name and press enter.");
+            playerTwo.playerName = Console.ReadLine();
         }
 
         public static string DecideGameLength()
@@ -80,10 +111,16 @@ namespace LemonadeStand
             Console.WriteLine("Your current weather report for day " + day + " is " + weather.temperature + " degrees and " + weather.condition + ".");
         }
 
-        public static void DisplayAmountOfCups(Player playerOne)
+        public static void DisplayAmountOfCupsPlayerOne(Player playerOne)
         {
             Console.Clear();
             Console.WriteLine("You now have {0} cups of fantastic lemonade to try to sell!", playerOne.recipe.cupsUsed);
+        }
+
+        public static void DisplayAmountOfCupsPlayerTwo(Player playerTwo)
+        {
+            Console.Clear();
+            Console.WriteLine("You now have {0} cups of fantastic lemonade to try to sell!", playerTwo.recipe.cupsUsed);
         }
 
         public static string DisplayAskIfGoingToStore()
@@ -164,6 +201,16 @@ namespace LemonadeStand
             Console.WriteLine("Ice is sold in groups of ice cubes. 100 cubes for $1.00. 250 cubes for $2.25. 500 cubes for $4.00. How many ice cubes would you like to buy? If you would rather not buy ice, type 'exit' to return to the store.");
             string choice = Console.ReadLine().ToLower();
             return choice;
+        }
+
+        public static void DisplayPlayerOneTurn(Player playerOne)
+        {
+            Console.WriteLine("It's your turn now " + playerOne.playerName + ".");
+        }
+
+        public static void DisplayPlayerTwoTurn(Player playerTwo)
+        {
+            Console.WriteLine("It's your turn now " + playerTwo.playerName + ".");
         }
 
 
@@ -259,10 +306,20 @@ namespace LemonadeStand
         //User interface for Inventory Class
 
 
-        public static void DisplayInventory(int cupCount, int lemonCount, int sugarCount, int iceCount)
+        public static void DisplayInventoryPlayerOne(Player playerOne, int cupCount, int lemonCount, int sugarCount, int iceCount)
         {
             Console.Clear();
-            Console.WriteLine("Your current inventory");
+            Console.WriteLine(playerOne.playerName + ", your current inventory is:");
+            Console.WriteLine("Cups: {0}", cupCount);
+            Console.WriteLine("Lemons: {0}", lemonCount);
+            Console.WriteLine("Cups of Sugar: {0}", sugarCount);
+            Console.WriteLine("Ice Cubes: {0}", iceCount);
+        }
+
+        public static void DisplayInventoryPlayerTwo(Player playerTwo, int cupCount, int lemonCount, int sugarCount, int iceCount)
+        {
+            Console.Clear();
+            Console.WriteLine(playerTwo.playerName + ", your current inventory is:");
             Console.WriteLine("Cups: {0}", cupCount);
             Console.WriteLine("Lemons: {0}", lemonCount);
             Console.WriteLine("Cups of Sugar: {0}", sugarCount);

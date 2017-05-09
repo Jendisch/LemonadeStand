@@ -32,7 +32,7 @@ namespace LemonadeStand
             GetCurrentCondition(random);
         }
 
-        public void GetCurrentTemperature(Random random)
+        private void GetCurrentTemperature(Random random)
         {
             int weatherRandom = random.Next(0, weatherTemperature.Length);
             switch (weatherRandom)
@@ -57,7 +57,7 @@ namespace LemonadeStand
             }
         }
 
-        public void GetCurrentCondition(Random random)
+        private void GetCurrentCondition(Random random)
         {
             int conditionRandom = random.Next(0, weatherCondition.Length);
             condition = weatherCondition[conditionRandom];

@@ -15,16 +15,36 @@ namespace LemonadeStand
 
         Random random;
         Game game;
+
+        public void DecideOneOrTwo(Random random)
+        {
+            UserInterface.WelcomePlayerToGame();
+            string choice = UserInterface.AskOneOrTwoPlayers();
+            switch (choice)
+            {
+                case "1":
+                    ChooseNewOrOldGame(random);
+                    break;
+                case "2":
+                    game = new Game();
+                    game.StartGameTwoPlayers(random);
+                    break;
+                default:
+                    UserInterface.DisplayNotAValidResponse();
+                    DecideOneOrTwo(random);
+                    break;
+            }
+        }
+
+
         public void ChooseNewOrOldGame(Random random)
         {
-           
-            UserInterface.WelcomePlayerToGame();
             string choice = UserInterface.DisplayNewOrLoad();
             switch (choice)
             {
                 case "new":
                     game = new Game();
-                    game.StartGame(random);
+                    game.StartGameOnePlayer(random);
                     break;
                 case "load":
                     string name = UserInterface.AskForUniqueName();

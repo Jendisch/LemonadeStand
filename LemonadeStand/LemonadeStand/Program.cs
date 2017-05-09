@@ -12,7 +12,7 @@ namespace LemonadeStand
         {
             Random random = new Random();
             PreGame preGame = new PreGame(random);
-            preGame.ChooseNewOrOldGame(random);
+            preGame.DecideOneOrTwo(random);
 
 
          

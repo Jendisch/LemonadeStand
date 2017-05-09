@@ -11,9 +11,17 @@ namespace LemonadeStand
     {
         
         Player playerOne;
+        Player playerTwo;
+
         public Day(Player player)
         {
             playerOne = player;
+        }
+
+        public Day(Player playerOne, Player playerTwo)
+        {
+            this.playerOne = playerOne;
+            this.playerTwo = playerTwo;
         }
 
         public double pricePerCup;
@@ -26,11 +34,12 @@ namespace LemonadeStand
         public double moneySpentOnInventory;
         public string netProfit;
         public string netDeficit;
-        public double totalProfit;
+        public double totalProfitPlayerOne;
+        public double totalProfitPlayerTwo;
         public int dayNumber;
         public int savedLengthOfGame;
 
-        public void TakeTurn(int lengthOfGame, Day day, Random random, int dayStart = 1)
+        public void TakeTurnOnePlayer(int lengthOfGame, Day day, Random random, int dayStart = 1)
         {
             moneySpentOnInventory = 0;
             for (var i = dayStart; i <= lengthOfGame; i++)
@@ -42,24 +51,69 @@ namespace LemonadeStand
                 weather.GetCurrentForecast(random);
                 UserInterface.DisplayCurrentWeather(i, weather);
                 weather.GetWeatherForcast(random);
-                DisplayInventoryAndMoney();
+                DisplayInventoryAndMoneyPlayerOne();
                 GoToStore(store);
-                DisplayInventoryAndMoney();
+                DisplayInventoryAndMoneyPlayerOne();
                 playerOne.recipe.MakeRecipe();
                 playerOne.inventory.RemoveItemsAfterMakingLemonade(playerOne);
-                UserInterface.DisplayAmountOfCups(playerOne);
+                UserInterface.DisplayAmountOfCupsPlayerOne(playerOne);
                 DecidePriceOfCup();
                 GenerateAmountOfPotentialCustomers(weather, random);
                 CreateCustomers(day, playerOne, random);
-                FindCustomersAndProfit(store);
-                totalProfit = (playerOne.wallet.wallet - 30);
-                SavedGame saved = new SavedGame(playerOne, dayNumber, savedLengthOfGame, totalProfit);
-                saved.AskToSaveGame(playerOne, dayNumber, savedLengthOfGame, totalProfit);
+                FindCustomersAndProfitPlayerOne(store);
+                totalProfitPlayerOne = (playerOne.wallet.wallet - 30);
+                SavedGame saved = new SavedGame(playerOne, dayNumber, savedLengthOfGame, totalProfitPlayerOne);
+                saved.AskToSaveGame(playerOne, dayNumber, savedLengthOfGame, totalProfitPlayerOne);
                 Console.ReadKey();
             }
         }
 
-        public void GoToStore(Store store)
+        public void TakeTurnTwoPlayers(int lengthOfGame, Day day, Random random, int dayStart = 1)
+        {
+            moneySpentOnInventory = 0;
+            for (var i = dayStart; i <= lengthOfGame; i++)
+            {
+                dayNumber = i;
+                savedLengthOfGame = lengthOfGame;
+                Store store = new Store(playerOne, playerTwo);
+                Weather weather = new Weather(random);
+                weather.GetCurrentForecast(random);
+                UserInterface.DisplayCurrentWeather(i, weather);
+                weather.GetWeatherForcast(random);
+                UserInterface.DisplayPlayerOneTurn(playerOne);
+                DisplayInventoryAndMoneyPlayerOne();
+                GoToStore(store);
+                DisplayInventoryAndMoneyPlayerOne();
+                playerOne.recipe.MakeRecipe();
+                playerOne.inventory.RemoveItemsAfterMakingLemonade(playerOne);
+                UserInterface.DisplayAmountOfCupsPlayerOne(playerOne);
+                DecidePriceOfCup();
+                GenerateAmountOfPotentialCustomers(weather, random);
+                CreateCustomers(day, playerOne, random);
+                FindCustomersAndProfitPlayerOne(store);
+                totalProfitPlayerOne = (playerOne.wallet.wallet - 30);
+                SavedGame saved = new SavedGame(playerOne, dayNumber, savedLengthOfGame, totalProfitPlayerOne);
+                saved.AskToSaveGame(playerOne, dayNumber, savedLengthOfGame, totalProfitPlayerOne);
+
+                UserInterface.DisplayPlayerTwoTurn(playerTwo);
+                DisplayInventoryAndMoneyPlayerTwo();
+                GoToStorePlayerTwo(store);
+                DisplayInventoryAndMoneyPlayerTwo();
+                playerTwo.recipe.MakeRecipe();
+                playerTwo.inventory.RemoveItemsAfterMakingLemonadePlayerTwo(playerTwo);
+                UserInterface.DisplayAmountOfCupsPlayerTwo(playerTwo);
+                DecidePriceOfCup();
+                GenerateAmountOfPotentialCustomers(weather, random);
+                CreateCustomers(day, playerTwo, random);
+                FindCustomersAndProfitPlayerTwo(store);
+                totalProfitPlayerTwo = (playerTwo.wallet.wallet - 30);
+                SavedGame save = new SavedGame(playerTwo, dayNumber, savedLengthOfGame, totalProfitPlayerTwo);
+                save.AskToSaveGame(playerTwo, dayNumber, savedLengthOfGame, totalProfitPlayerTwo);
+                Console.ReadKey();
+            }
+        }
+
+        private void GoToStore(Store store)
         {
             string choice = UserInterface.DisplayAskIfGoingToStore();
             if (choice == "yes")
@@ -77,13 +131,37 @@ namespace LemonadeStand
             }
         }
 
-        public void DisplayInventoryAndMoney()
+        private void GoToStorePlayerTwo(Store store)
         {
-            playerOne.inventory.ShowItemInventory();
+            string choice = UserInterface.DisplayAskIfGoingToStore();
+            if (choice == "yes")
+            {
+                store.BuyFromStorePlayerTwo();
+            }
+            else if (choice == "no")
+            {
+                return;
+            }
+            else
+            {
+                UserInterface.DisplayNotAValidResponse();
+                GoToStore(store);
+            }
+        }
+
+        private void DisplayInventoryAndMoneyPlayerOne()
+        {
+            playerOne.inventory.ShowItemInventoryPlayerOne(playerOne);
             playerOne.wallet.ShowMoneyAvailable();
         }
 
-        public double DecidePriceOfCup()
+        private void DisplayInventoryAndMoneyPlayerTwo()
+        {
+            playerTwo.inventory.ShowItemInventoryPlayerTwo(playerTwo);
+            playerTwo.wallet.ShowMoneyAvailable();
+        }
+
+        private double DecidePriceOfCup()
         {
             UserInterface.DisplayDecidePriceOfCup();
             try
@@ -99,7 +177,7 @@ namespace LemonadeStand
             }
         }
 
-        public double OddsToBuyTemperature(Weather weather, Random random)
+        private double OddsToBuyTemperature(Weather weather, Random random)
         {
             Console.Clear();
             if (weather.temperature >= 50 && weather.temperature <= 60)
@@ -125,7 +203,7 @@ namespace LemonadeStand
             return amountOfPotentialCustomers;
         }
 
-        public double OddsToBuyCondition(Weather weather)
+        private double OddsToBuyCondition(Weather weather)
         {
             if (weather.condition == "sunny")
             {
@@ -156,7 +234,7 @@ namespace LemonadeStand
             return amountOfPotentialCustomers;
         }
 
-        public void DecideAppropriateIceAmount(Weather weather)
+        private void DecideAppropriateIceAmount(Weather weather)
         {
             if (weather.temperature < 70)
             {
@@ -172,7 +250,7 @@ namespace LemonadeStand
             }
         }
 
-        public double OddsToBuyIce()
+        private double OddsToBuyIce()
         {
             if ((playerOne.recipe.iceUsed / playerOne.recipe.pitchersUsed) >= appropriateIceAmount)
             {
@@ -186,7 +264,7 @@ namespace LemonadeStand
         }
 
 
-        public double GenerateAmountOfPotentialCustomers(Weather weather, Random random)
+        private double GenerateAmountOfPotentialCustomers(Weather weather, Random random)
         {
             potentialCustomers = OddsToBuyTemperature(weather, random);
             potentialCustomers = OddsToBuyCondition(weather);
@@ -195,7 +273,7 @@ namespace LemonadeStand
             return potentialCustomers;
         }
 
-        public void CreateCustomers(Day day, Player playerOne, Random random)
+        private void CreateCustomers(Day day, Player playerOne, Random random)
         {
             customers = new List<Customer>();
             for (int i = 0; i < potentialCustomers; i++)
@@ -210,7 +288,7 @@ namespace LemonadeStand
             }
         }
 
-        public void FindCustomersAndProfit(Store store)
+        private void FindCustomersAndProfitPlayerOne(Store store)
         {
             if (customers.Count > playerOne.recipe.cupsUsed)
             {
@@ -225,7 +303,22 @@ namespace LemonadeStand
             }
         }
 
-        public void FindProfitOrDeficit(Store store)
+        private void FindCustomersAndProfitPlayerTwo(Store store)
+        {
+            if (customers.Count > playerTwo.recipe.cupsUsed)
+            {
+                dailyProfit = playerTwo.recipe.cupsUsed * pricePerCup;
+                UserInterface.DisplayNotEnoughLemonadeMade();
+                DisplayCustomersAndProfitForNotEnoughLemonadeMadePlayerTwo(store, playerTwo.recipe.cupsUsed);
+            }
+            else if (customers.Count <= playerTwo.recipe.cupsUsed)
+            {
+                dailyProfit = customers.Count * pricePerCup;
+                DisplayCustomersAndProfitPlayerTwo(store);
+            }
+        }
+
+        private void FindProfitOrDeficit(Store store)
         {
             moneySpentOnInventory = store.GetMoneySpentOnInventory();
             if (dailyProfit >= moneySpentOnInventory)
@@ -242,7 +335,7 @@ namespace LemonadeStand
             }
         }
 
-        public void DisplayCustomersAndProfit(Store store)
+        private void DisplayCustomersAndProfit(Store store)
         {
             Console.Clear();
             playerOne.wallet.wallet += dailyProfit;
@@ -253,13 +346,35 @@ namespace LemonadeStand
             FindProfitOrDeficit(store);
         }
 
-        public void DisplayCustomersAndProfitForNotEnoughLemonadeMade(Store store, int number)
+        private void DisplayCustomersAndProfitPlayerTwo(Store store)
+        {
+            Console.Clear();
+            playerTwo.wallet.wallet += dailyProfit;
+            string profit = dailyProfit.ToString("C");
+            int number = customers.Count;
+            UserInterface.DisplayDailyProfitAndWallet(playerTwo, profit, number);
+            moneySpentOnInventory = store.GetMoneySpentOnInventory();
+            FindProfitOrDeficit(store);
+        }
+
+        private void DisplayCustomersAndProfitForNotEnoughLemonadeMade(Store store, int number)
         {
             Console.Clear();
             playerOne.wallet.wallet += dailyProfit;
             string profit = dailyProfit.ToString("C");
             number = customers.Count;
             UserInterface.DisplayDailyProfitAndWallet(playerOne, profit, number);
+            moneySpentOnInventory = store.GetMoneySpentOnInventory();
+            FindProfitOrDeficit(store);
+        }
+
+        private void DisplayCustomersAndProfitForNotEnoughLemonadeMadePlayerTwo(Store store, int number)
+        {
+            Console.Clear();
+            playerTwo.wallet.wallet += dailyProfit;
+            string profit = dailyProfit.ToString("C");
+            number = customers.Count;
+            UserInterface.DisplayDailyProfitAndWallet(playerTwo, profit, number);
             moneySpentOnInventory = store.GetMoneySpentOnInventory();
             FindProfitOrDeficit(store);
         }

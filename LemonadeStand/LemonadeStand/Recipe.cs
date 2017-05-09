@@ -10,9 +10,10 @@ namespace LemonadeStand
     {
 
         Inventory inventory;
+
         public Recipe(Inventory inventory)
         {
-            this.inventory = inventory;
+         this.inventory = inventory;
         }
 
         public int pitchersUsed = 0;
@@ -46,7 +47,6 @@ namespace LemonadeStand
                     DecideIceAmountForRecipe();
                     CheckInventoryIce();
                     ShowCustomRecipe();
-
                     break;
                 default:
                     UserInterface.DisplayNotAValidResponse();
@@ -55,7 +55,7 @@ namespace LemonadeStand
             }
         }
 
-        public int DecideNumberOfPitchers()
+        private int DecideNumberOfPitchers()
         {
             pitchersUsed = UserInterface.DisplayAskNumberOfPitchers(pitchersUsed);
             cupsUsed = pitchersUsed * cupsUsedPerPitcher;
@@ -71,13 +71,13 @@ namespace LemonadeStand
             }
         }
 
-        public int DecideLemonAmountForRecipe()
+        private int DecideLemonAmountForRecipe()
         {
             lemonsUsed = UserInterface.DisplayLemonsUsed(lemonsUsed);
             return lemonsUsed;
         }
 
-        public void CheckInventoryLemons()
+        private void CheckInventoryLemons()
         {
             if (inventory.lemons.Count - (lemonsUsed * pitchersUsed) >= 0)
             {
@@ -90,13 +90,13 @@ namespace LemonadeStand
             }
         }
 
-        public int DecideSugarAmountForRecipe()
+        private int DecideSugarAmountForRecipe()
         {
             sugarUsed = UserInterface.DisplaySugarUsed(sugarUsed);
             return sugarUsed;
         }
 
-        public void CheckInventorySugar()
+        private void CheckInventorySugar()
         {
             if (inventory.cupsOfSugar.Count - (sugarUsed * pitchersUsed) >= 0)
             {
@@ -109,13 +109,13 @@ namespace LemonadeStand
             }
         }
 
-        public int DecideIceAmountForRecipe()
+        private int DecideIceAmountForRecipe()
         {
             iceUsed = UserInterface.DisplayIceUsed(iceUsed);
             return iceUsed;
         }
 
-        public void CheckInventoryIce()
+        private void CheckInventoryIce()
         {
             if (inventory.cubesOfIce.Count - (iceUsed * pitchersUsed) >= 0)
             {
@@ -127,7 +127,7 @@ namespace LemonadeStand
                 DecideIceAmountForRecipe();
             }
         }
-        public void CheckInventoryCups()
+        private void CheckInventoryCups()
         {
             if (inventory.cups.Count - cupsUsed >= 0)
             {
@@ -140,14 +140,14 @@ namespace LemonadeStand
             }
         }
 
-        public int DecideNumberOfPitchersCustom()
+        private int DecideNumberOfPitchersCustom()
         {
             pitchersUsed = UserInterface.DisplayCustomPitcher(pitchersUsed);
             cupsUsed = pitchersUsed * cupsUsedPerPitcher;
             return pitchersUsed;
         }
 
-        public void ShowCustomRecipe()
+        private void ShowCustomRecipe()
         {
             UserInterface.DisplayCustomRecipe(lemonsUsed, sugarUsed, iceUsed);
         }

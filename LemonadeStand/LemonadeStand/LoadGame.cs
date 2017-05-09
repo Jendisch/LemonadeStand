@@ -29,7 +29,7 @@ namespace LemonadeStand
             return game;
         }
 
-        public VariableObjects FindSavedGame(string uniquePlayerName)
+        private VariableObjects FindSavedGame(string uniquePlayerName)
         {
                 DatabaseConnection connect = new DatabaseConnection();
                 bool player = connect.SearchForUniqueName(uniquePlayerName);
